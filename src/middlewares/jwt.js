@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const route = require('../routes/index');
 /**
  *  验证token令牌
  * @param {*} req
@@ -23,22 +23,20 @@ const authenticateJWT = (req, res, next) => {
   });
 };
 
-/*
- * 请求放行白名单，不需要验证token
- */
-
-const whiteList = [
-  '/api/user/captcha',
-  '/api/user/login',
-  '/api/user/register',
-];
+const whiteList = ['/captcha', '/register', '/login']; //设置白名单
 
 const checReqWhiteList = (req, res, next) => {
   const url = req.url;
-  if (whiteList.includes(url)) {
-    next();
+  let pathsList = route.pathsList.map((item) => item.split(' ')[1]);
+
+  if (pathsList.includes(url)) {
+    if (whiteList.includes(url)) {
+      next();
+    } else {
+      authenticateJWT(req, res, next);
+    }
   } else {
-    authenticateJWT(req, res, next);
+    next();
   }
 };
 

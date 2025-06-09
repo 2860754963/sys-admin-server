@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const jwt = require('./middlewares/jwt');
+const checkMethods = require('./middlewares/checkMethods');
 
 // 路由导入，路由的匹配是从上到下依次匹配的，写在前边的路由优先级较高
 const userRoutes = require('./routes/userRoutes');
@@ -32,22 +33,23 @@ app.use(
     },
   })
 );
-app.use((req, res, next) => {
-  console.log('🚀🚀🚀 ~ Request URL:', req.originalUrl);
-  console.log('🚀🚀🚀 ~ Request Method:', req.method);
-  console.log('🚀🚀🚀 ~ Query Parameters:', req.query);
-  console.log('🚀🚀🚀 ~ Request Body:', req.body);
-  console.log('🚀🚀🚀 ~ Cookies:', req.cookies);
-  console.log('🚀🚀🚀 ~ Params:', req.params);
-  next();
-});
+
+// app.use((req, res, next) => {
+//   console.log('🚀🚀🚀 ~ Request URL:', req.originalUrl);
+//   console.log('🚀🚀🚀 ~ Request Method:', req.method);
+//   console.log('🚀🚀🚀 ~ Query Parameters:', req.query);
+//   console.log('🚀🚀🚀 ~ Request Body:', req.body);
+//   console.log('🚀🚀🚀 ~ Cookies:', req.cookies);
+//   console.log('🚀🚀🚀 ~ Params:', req.params);
+//   next();
+// });
 
 // 静态资源托管 /public为前缀
 app.use('/public', express.static(path.join(__dirname, 'public'))); //静态资源托管 如果存在多个托管目录则会顺序查找
 
-// 添加路由前缀
-app.use(jwt.checReqWhiteList);
-app.use('/api/user', userRoutes);
+app.use(checkMethods); // 校验请求方法中间件
+
+app.use('/api/user', jwt.checReqWhiteList, userRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

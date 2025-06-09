@@ -1,0 +1,347 @@
+{
+  "code": 200,
+  "msg": "ok",
+  "data": [
+    {
+      "id": "996012789342433537",
+      "parentId": "0",
+      "path": "/dashboard",
+      "name": "工作台",
+      "component": "/dashboard/index",
+      "redirect": null,
+      "meta": {
+        "title": "工作台",
+        "icon": "el-icon-eleme",
+        "breadcrumb": true
+      },
+      "hidden": false,
+      "alwaysShow": false,
+      "children": null
+    },
+    {
+      "id": "996013586302137537",
+      "parentId": "0",
+      "path": "/transit",
+      "name": "基础数据管理",
+      "component": "Layout",
+      "redirect": null,
+      "meta": {
+        "title": "基础数据管理",
+        "icon": "el-icon-medal",
+        "breadcrumb": true
+      },
+      "hidden": false,
+      "alwaysShow": true,
+      "children": [
+        {
+          "id": "996014097885592353",
+          "parentId": "996013586302137537",
+          "path": "/branches/organization-manage",
+          "name": "机构管理",
+          "component": "/branches/organization-manage/index",
+          "redirect": null,
+          "meta": {
+            "title": "机构管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        },
+        {
+          "id": "996014173659888673",
+          "parentId": "996013586302137537",
+          "path": "/branches/institutions-jobs-area",
+          "name": "机构作业范围",
+          "component": "/branches/institutions-jobs-area/index",
+          "redirect": null,
+          "meta": {
+            "title": "机构作业范围",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        },
+        {
+          "id": "996013891701995649",
+          "parentId": "996013586302137537",
+          "path": "/transit/freight-manage",
+          "name": "运费管理",
+          "component": "/transit/freight-manage/index",
+          "redirect": null,
+          "meta": {
+            "title": "运费管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": "1013825825621851521",
+      "parentId": "0",
+      "path": "/transit1",
+      "name": "车辆管理",
+      "component": "Layout",
+      "redirect": null,
+      "meta": {
+        "title": "车辆管理",
+        "icon": "el-icon-eleme",
+        "breadcrumb": true
+      },
+      "hidden": false,
+      "alwaysShow": true,
+      "children": [
+        {
+          "id": "996013688966116737",
+          "parentId": "1013825825621851521",
+          "path": "/transit/car-models",
+          "name": "车型管理",
+          "component": "/transit/car-models/index",
+          "redirect": null,
+          "meta": {
+            "title": "车型管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        },
+        {
+          "id": "996013733509625409",
+          "parentId": "1013825825621851521",
+          "path": "/transit/vehicle",
+          "name": "车辆列表",
+          "component": "/transit/vehicle/index",
+          "redirect": null,
+          "meta": {
+            "title": "车辆列表",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        },
+        {
+          "id": "996014803833095265",
+          "parentId": "1013825825621851521",
+          "path": "/transit/car-register",
+          "name": "回车登记",
+          "component": "/transit/car-register/index",
+          "redirect": null,
+          "meta": {
+            "title": "回车登记",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": "1013826500665722913",
+      "parentId": "0",
+      "path": "/transit2",
+      "name": "员工管理",
+      "component": "Layout",
+      "redirect": null,
+      "meta": {
+        "title": "员工管理",
+        "icon": "el-icon-user",
+        "breadcrumb": true
+      },
+      "hidden": false,
+      "alwaysShow": true,
+      "children": [
+        {
+          "id": "996014324117962145",
+          "parentId": "1013826500665722913",
+          "path": "/branches/operational-range",
+          "name": "快递员管理",
+          "component": "/branches/operational-range/index",
+          "redirect": null,
+          "meta": {
+            "title": "快递员管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        },
+        {
+          "id": "996013790027872001",
+          "parentId": "1013826500665722913",
+          "path": "/transit/driver",
+          "name": "司机管理",
+          "component": "/transit/driver/index",
+          "redirect": null,
+          "meta": {
+            "title": "司机管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        },
+        {
+          "id": "996013832419702721",
+          "parentId": "1013826500665722913",
+          "path": "/transit/workArrange-manage",
+          "name": "排班管理",
+          "component": "/transit/workArrange-manage/index",
+          "redirect": null,
+          "meta": {
+            "title": "排班管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": "996014431324372769",
+      "parentId": "0",
+      "path": "/business",
+      "name": "业务管理",
+      "component": "Layout",
+      "redirect": null,
+      "meta": {
+        "title": "业务管理",
+        "icon": "el-icon-set-up",
+        "breadcrumb": true
+      },
+      "hidden": false,
+      "alwaysShow": true,
+      "children": [
+        {
+          "id": "996014478124416993",
+          "parentId": "996014431324372769",
+          "path": "/business/order-manage",
+          "name": "订单管理",
+          "component": "/business/order-manage/index",
+          "redirect": null,
+          "meta": {
+            "title": "订单管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        },
+        {
+          "id": "996014533355012257",
+          "parentId": "996014431324372769",
+          "path": "/business/waybill",
+          "name": "运单管理",
+          "component": "/business/waybill/index",
+          "redirect": null,
+          "meta": {
+            "title": "运单管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": "996014596043080033",
+      "parentId": "0",
+      "path": "/transport",
+      "name": "调度管理",
+      "component": "Layout",
+      "redirect": null,
+      "meta": {
+        "title": "调度管理",
+        "icon": "el-icon-service",
+        "breadcrumb": true
+      },
+      "hidden": false,
+      "alwaysShow": true,
+      "children": [
+        {
+          "id": "996014640003580449",
+          "parentId": "996014596043080033",
+          "path": "/transport/transport-task",
+          "name": "运输任务管理",
+          "component": "/transport/transport-task/index",
+          "redirect": null,
+          "meta": {
+            "title": "运输任务管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        },
+        {
+          "id": "996014685012656865",
+          "parentId": "996014596043080033",
+          "path": "/transport/line-manage",
+          "name": "线路管理",
+          "component": "/transport/line-manage/index",
+          "redirect": null,
+          "meta": {
+            "title": "线路管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        },
+        {
+          "id": "1016645172630893697",
+          "parentId": "996014596043080033",
+          "path": "/branches/pickUptask",
+          "name": "取件作业管理",
+          "component": "/branches/pickUptask/index",
+          "redirect": null,
+          "meta": {
+            "title": "取件作业管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        },
+        {
+          "id": "1016645380668372641",
+          "parentId": "996014596043080033",
+          "path": "/branches/dispatchTask",
+          "name": "派件作业管理",
+          "component": "/branches/dispatchTask/index",
+          "redirect": null,
+          "meta": {
+            "title": "派件作业管理",
+            "icon": "",
+            "breadcrumb": true
+          },
+          "hidden": false,
+          "alwaysShow": false,
+          "children": null
+        }
+      ]
+    }
+  ]
+}

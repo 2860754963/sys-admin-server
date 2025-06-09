@@ -1,0 +1,17 @@
+[
+  {
+    "name": "小美",
+    "id": 1,
+    "age": 20,
+    "username": "admin",
+    "password": "123456",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTc0ODQxNDg3MiwiZXhwIjoxNzQ4NDE4NDcyfQ.n9VjxFMYfZNiehMqfyGRpm1Z3woel-vhWS33dQ4xaCs"
+  },
+  { "name": "小帅", "id": 2, "username": "admin1", "password": "123456" },
+  {
+    "name": "admincsssss",
+    "username": "admincsssss",
+    "password": "123456",
+    "id": 3
+  }
+]

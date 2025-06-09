@@ -1,0 +1,32 @@
+{
+  "name": "sysa-admin-server",
+  "version": "0.0.1",
+  "description": "A simple management system ",
+  "private": true,
+  "scripts": {
+    "pinstall": "pnpm install",
+    "dev": "dotenv -e .env.development supervisor ./bin/www",
+    "prod": "dotenv -e .env.production supervisor ./bin/www"
+  },
+  "dependencies": {
+    "@alicloud/dysmsapi20170525": "4.1.1",
+    "body-parser": "^2.2.0",
+    "captchapng2": "^1.0.3",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "dotenv": "^16.5.0",
+    "dotenv-cli": "^8.0.0",
+    "express": "~4.14.0",
+    "express-session": "^1.14.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "~1.7.0",
+    "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "express-session": "^1.14.2",
+    "supervisor": "^0.12.0"
+  },
+  "engines": {
+    "node": "18.16.0"
+  }
+}

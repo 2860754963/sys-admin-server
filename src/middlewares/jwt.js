@@ -23,11 +23,15 @@ const authenticateJWT = (req, res, next) => {
   });
 };
 
-/**
+/*
  * 请求放行白名单，不需要验证token
  */
 
-const whiteList = ['/api/captcha', '/api/user/login', '/api/user/register'];
+const whiteList = [
+  '/api/user/captcha',
+  '/api/user/login',
+  '/api/user/register',
+];
 
 const checReqWhiteList = (req, res, next) => {
   const url = req.url;
@@ -39,6 +43,5 @@ const checReqWhiteList = (req, res, next) => {
 };
 
 module.exports = {
-  authenticateJWT,
   checReqWhiteList,
 };

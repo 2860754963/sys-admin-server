@@ -1,17 +1,15 @@
-const express = require('express');
-const router = express.Router();
+const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
-const jwt = require('jsonwebtoken');
-const CaptchaService = require('../utils/captchaService');
 const utils = require('../utils/index');
+const CaptchaService = require('../utils/captchaService');
 
 let content = JSON.parse(
   fs.readFileSync(path.join(__dirname, '../../public/data/user.json'), 'utf8')
 );
 
-//获取验证码
-router.get('/captcha', (req, res) => {
+// 验证码
+exports.captcha = (req, res) => {
   const { buffer, text } = CaptchaService.createPng({
     width: 120,
     height: 40,
@@ -40,10 +38,10 @@ router.get('/captcha', (req, res) => {
       },
     });
   }
-});
+};
 
-//登录
-router.post('/login', (req, res, next) => {
+// 登录
+exports.login = (req, res, next) => {
   let username = req?.body?.username;
   let password = req?.body?.password;
   let code = req?.body?.code;
@@ -80,16 +78,16 @@ router.post('/login', (req, res, next) => {
       return res.send({
         success: true,
         code: 200,
-        data: { ...content[index] },
+        data: { ...content[index], expires: process.env.JWT_EXPIRE_TIME },
       });
     } else {
       return res.send({ success: false, code: 400, data: '密码错误,登录失败' });
     }
   }
-});
+};
 
-// 注册接口
-router.post('/register', (req, res, next) => {
+// 注册
+exports.register = (req, res, next) => {
   let username = req?.body?.username;
   let password = req?.body?.password;
   let code = req?.body?.code;
@@ -124,6 +122,13 @@ router.post('/register', (req, res, next) => {
   );
 
   return res.send({ success: true, code: 200, data: '注册成功' });
-});
+};
 
-module.exports = router;
+// 获取菜单
+exports.getMenus = (req, res, next) => {
+  let content = fs.readFileSync(
+    path.join(__dirname, '../../public/data/menus.json'),
+    'utf8'
+  );
+  return res.send({ success: true, code: 200, data: JSON.parse(content) });
+};

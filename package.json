@@ -1,5 +1,5 @@
 {
-  "name": "sysa-admin-server",
+  "name": "sys-admin-server",
   "version": "0.0.1",
   "description": "A simple management system ",
   "private": true,

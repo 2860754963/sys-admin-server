@@ -15,9 +15,8 @@ const data = require('./routes/data');
 
 const app = express();
 
-app.set('views', path.join(__dirname, 'views'));
-
 app.use(favicon(path.join(__dirname, '../public', 'favicon.ico')));
+
 app.use(logger('dev'));
 
 app.use(bodyParser.json());
@@ -35,17 +34,28 @@ app.use(
     },
   })
 );
+app.use((req, res, next) => {
+  console.log('🚀🚀🚀 ~ Request URL:', req.originalUrl);
+  console.log('🚀🚀🚀 ~ Request Method:', req.method);
+  console.log('🚀🚀🚀 ~ Query Parameters:', req.query);
+  console.log('🚀🚀🚀 ~ Request Body:', req.body);
+  console.log('🚀🚀🚀 ~ Cookies:', req.cookies);
+  console.log('🚀🚀🚀 ~ Params:', req.params);
+  next();
+});
 
 // 静态资源托管 /public为前缀
 app.use('/public', express.static(path.join(__dirname, 'public'))); //静态资源托管 如果存在多个托管目录则会顺序查找
-app.use(jwt.checReqWhiteList);
+
 // 添加路由前缀
 app.use('/api', index);
+app.use(jwt.checReqWhiteList);
 app.use('/api/user', user);
 app.use('/api/data', data);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
+  console.log('🚀🚀🚀 ~ app.use ~ req🚀🚀🚀', req);
   console.log('中间件处理404');
   let err = new Error('Not Found');
   err.status = 404;
@@ -56,10 +66,11 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  return res.status(err.status || 500).send({
+    success: false,
+    code: err.status || 500,
+    data: err.message,
+  });
 });
 
 module.exports = app;

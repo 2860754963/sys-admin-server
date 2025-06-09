@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const PATH = '../../public/data/';
+const publicIndex = require('../../public/index');
 
+const PATH = publicIndex.pubilcDataPath + '/';
 //读取数据模块，供客户端调用
 //查询接口，token校验
 //公共接口，无需校验

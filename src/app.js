@@ -34,15 +34,19 @@ app.use(
   })
 );
 
-// app.use((req, res, next) => {
-//   console.log('🚀🚀🚀 ~ Request URL:', req.originalUrl);
-//   console.log('🚀🚀🚀 ~ Request Method:', req.method);
-//   console.log('🚀🚀🚀 ~ Query Parameters:', req.query);
-//   console.log('🚀🚀🚀 ~ Request Body:', req.body);
-//   console.log('🚀🚀🚀 ~ Cookies:', req.cookies);
-//   console.log('🚀🚀🚀 ~ Params:', req.params);
-//   next();
-// });
+app.use((req, res, next) => {
+  console.log('🚀🚀🚀 ~ Incoming Request Details 🚀🚀🚀');
+  console.table([
+    { Key: 'Request URL', Value: req.originalUrl },
+    { Key: 'Request Method', Value: req.method },
+    { Key: 'Query Parameters', Value: JSON.stringify(req.query) },
+    { Key: 'Request Body', Value: JSON.stringify(req.body) },
+    { Key: 'Cookies', Value: JSON.stringify(req.cookies) },
+    { Key: 'Params', Value: JSON.stringify(req.params) },
+  ]);
+
+  next();
+});
 
 // 静态资源托管 /public为前缀
 app.use('/public', express.static(path.join(__dirname, 'public'))); //静态资源托管 如果存在多个托管目录则会顺序查找

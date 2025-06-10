@@ -14,7 +14,8 @@ const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
-app.use(favicon(path.join(__dirname, '../public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, '../public', 'favicon.ico'))); // 网站图标
+app.use('/public', express.static(path.join(__dirname, '../public'))); //静态资源托管  添加路径前缀 /public
 
 app.use(logger('dev'));
 

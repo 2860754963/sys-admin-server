@@ -8,8 +8,7 @@ const memoryDest = path.join(__dirname, '../../public/images');
 const storage = multer.diskStorage({
   // 文件存储位置
   destination: (req, file, cb) => {
-    console.log('🚀🚀🚀 ~ file🚀🚀🚀', file);
-    console.log('🚀🚀🚀 ~ req🚀🚀🚀', req);
+    // console.log('🚀🚀🚀 ~ file🚀🚀🚀', file);
     const isExists = fs.existsSync(memoryDest);
     if (!isExists) {
       fs.mkdirSync(memoryDest);
@@ -17,11 +16,11 @@ const storage = multer.diskStorage({
     cb(null, memoryDest);
   },
   filename: (req, file, cb) => {
+    console.log('🚀🚀🚀 ~ file🚀🚀🚀', file);
     // 生成唯一文件名
     const uid = uuid.v1();
-    // 获取文件扩展名
-    let ext = path.extname(file.originalname);
-    cb(null, uid + ext);
+
+    cb(null, uid + file.fieldname);
   },
 });
 

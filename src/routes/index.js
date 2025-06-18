@@ -1,4 +1,5 @@
 const userRoutes = require('./userRoutes');
+const utilsRoutes = require('./utilsRouter');
 
 const getRoutePaths = (routers) => {
   const paths = [];
@@ -17,7 +18,7 @@ const getRoutePaths = (routers) => {
   return paths;
 };
 
-const pathsList = getRoutePaths([userRoutes]);
+const pathsList = getRoutePaths([userRoutes, utilsRoutes]);
 
 module.exports = {
   pathsList,

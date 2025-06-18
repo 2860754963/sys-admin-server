@@ -1,5 +1,6 @@
 sysa-admin-server/
 ├── bin/ www # 启动文件
+├── public/ 公共数据文件夹
 ├── src/
 │ ├── controllers/ # 控制器层，处理业务逻辑
 │ ├── middlewares/ # 中间件，处理请求前后逻辑

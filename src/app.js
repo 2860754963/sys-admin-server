@@ -6,14 +6,15 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const jwt = require('./middlewares/jwt');
 const checkMethods = require('./middlewares/checkMethods');
 
 // 路由导入，路由的匹配是从上到下依次匹配的，写在前边的路由优先级较高
 const userRoutes = require('./routes/userRoutes');
+const utilsRoutes = require('./routes/utilsRouter');
 
 const app = express();
-
 app.use(favicon(path.join(__dirname, '../public', 'favicon.ico'))); // 网站图标
 app.use('/public', express.static(path.join(__dirname, '../public'))); //静态资源托管  添加路径前缀 /public
 
@@ -36,7 +37,7 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  console.log('🚀🚀🚀 ~ Incoming Request Details 🚀🚀🚀');
+  // console.log('🚀🚀🚀 ~ Incoming Request Details 🚀🚀🚀');
   console.table([
     { Key: 'Request URL', Value: req.originalUrl },
     { Key: 'Request Method', Value: req.method },
@@ -52,9 +53,15 @@ app.use((req, res, next) => {
 // 静态资源托管 /public为前缀
 app.use('/public', express.static(path.join(__dirname, 'public'))); //静态资源托管 如果存在多个托管目录则会顺序查找
 
-app.use(checkMethods); // 校验请求方法中间件
+// 校验请求方法中间件
+app.use(checkMethods);
 
+// 跨域设置
+app.use(cors());
+
+// 路由注册
 app.use('/api/user', jwt.checReqWhiteList, userRoutes);
+app.use('/api', utilsRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

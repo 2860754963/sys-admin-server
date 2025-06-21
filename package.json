@@ -8,7 +8,8 @@
     "pinstall": "pnpm install",
     "dev": "dotenv -e .env.development supervisor ./bin/www",
     "prod": "dotenv -e .env.production supervisor ./bin/www",
-    "pkg": "pkg . -t  node18-macos-arm64 --out-path dist/"
+    "pkg": "pkg . -t  node18-macos-arm64 --out-path dist/",
+    "build": "webpack --config webpack.config.js"
   },
   "pkg": {
     "assets": [
@@ -39,7 +40,9 @@
   },
   "devDependencies": {
     "express-session": "^1.14.2",
-    "supervisor": "^0.12.0"
+    "supervisor": "^0.12.0",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
   },
   "engines": {}
 }

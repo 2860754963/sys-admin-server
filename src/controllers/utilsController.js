@@ -2,7 +2,7 @@ exports.upload = (req, res, next) => {
   if (!req.file) {
     return res.status(400).json({
       success: false,
-      message: '未上传文件',
+      message: '未检测到文件',
     });
   }
 
@@ -10,4 +10,15 @@ exports.upload = (req, res, next) => {
     code: 200,
     result: 'success',
   });
+};
+
+exports.uploadAvatar = (req, res, next) => {
+  if (!req.file) {
+    return res.status(400).json({
+      success: false,
+      message: '未检测到文件',
+    });
+  }
+
+
 };

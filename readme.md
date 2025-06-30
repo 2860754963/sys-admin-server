@@ -1,4 +1,4 @@
-sysa-admin-server/
+sys-admin-server/
 ├── bin/ www # 启动文件
 ├── public/ 公共数据文件夹
 ├── src/

@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const consoletable = require('@xdooi/consoletable');
 const jwt = require('./middlewares/jwt');
 const checkMethods = require('./middlewares/checkMethods');
 
@@ -37,15 +38,29 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  // console.log('🚀🚀🚀 ~ Incoming Request Details 🚀🚀🚀');
-  console.table([
-    { Key: 'Request URL', Value: req.originalUrl },
-    { Key: 'Request Method', Value: req.method },
-    { Key: 'Query Parameters', Value: JSON.stringify(req.query) },
-    { Key: 'Request Body', Value: JSON.stringify(req.body) },
-    { Key: 'Cookies', Value: JSON.stringify(req.cookies) },
-    { Key: 'Params', Value: JSON.stringify(req.params) },
-  ]);
+  // 参数log;
+  const options = { head: 'def', max: 50 };
+  consoletable.drawTable(
+    [
+      {
+        'Request URL': '请求地址',
+        'Request Method': '请求方法',
+        'Query Parameters': '查询参数',
+        'Request Body': '请求体',
+        'req Cookies': '请求cookies',
+        'req Params': '请求参数',
+      },
+      {
+        'Request URL': req.originalUrl,
+        'Request Method': req.method,
+        'Query Parameters': JSON.stringify(req?.query),
+        'Request Body': JSON.stringify(req?.body ? req.body : {}),
+        'req Cookies': JSON.stringify(req?.cookies),
+        'req Params': JSON.stringify(req?.params),
+      },
+    ],
+    options
+  );
 
   next();
 });
@@ -58,6 +73,18 @@ app.use(checkMethods);
 
 // 跨域设置
 app.use(cors());
+
+app.use((req, res, next) => {
+  const originalJson = res.json;
+  res.json = (data, statusCode = 200) => {
+    // if (typeof data === 'object') {
+    data.code = statusCode;
+    data.success = statusCode === 200;
+    // }
+    originalJson.call(res, data);
+  };
+  next();
+});
 
 // 路由注册
 app.use('/api/user', jwt.checReqWhiteList, userRoutes);
@@ -74,11 +101,12 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-  return res.status(err.status || 500).send({
-    success: false,
-    code: err.status || 500,
-    data: err.message,
-  });
+  res.json(
+    {
+      data: err.message,
+    },
+    err.status || 500
+  );
 });
 
 module.exports = app;

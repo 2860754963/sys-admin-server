@@ -9,7 +9,7 @@ let content = JSON.parse(
 );
 
 // 验证码
-exports.captcha = (req, res) => {
+exports.captcha = (req, res, next) => {
   const { buffer, text } = CaptchaService.createPng({
     width: 120,
     height: 40,
@@ -22,21 +22,13 @@ exports.captcha = (req, res) => {
   };
   console.log('🚀🚀🚀req.session.captcha🚀🚀🚀', req.session.captcha);
   if (buffer && text) {
-    res.send({
-      success: true,
-      code: 200,
+    return res.json({
       data: {
         img: `data:image/png;base64,${buffer.toString('base64')}`,
       },
     });
   } else {
-    res.send({
-      success: false,
-      code: 500,
-      data: {
-        img: '',
-      },
-    });
+    return res.json({ data: '验证码生成失败' }, 500);
   }
 };
 
@@ -46,24 +38,23 @@ exports.login = (req, res, next) => {
   let password = req?.body?.password;
   let code = req?.body?.code;
   if (!username || !password || !code)
-    return res.send({
+    return res.json({
       success: 0,
       code: 400,
       data: '用户名或密码或验证码不能为空',
     });
-  if (!req.session.captcha)
-    return res.send({ success: false, code: 400, data: '验证码已过期' });
+  if (!req.session.captcha) return res.json({ data: '验证码已过期' }, 400);
   let { text, createdAt, expiresIn } = req.session.captcha;
-  if (code !== text)
-    return res.send({ success: false, code: 400, data: '验证码错误' });
+  if (code !== text) return res.json({ data: '验证码错误' }, 400);
 
   let index = content.findIndex((item) => item.username === username);
   if (index === -1) {
-    return res.send({
-      success: false,
-      code: 400,
-      data: '用户名不存在，请注册',
-    });
+    return res.json(
+      {
+        data: '用户名不存在，请注册',
+      },
+      400
+    );
   } else {
     if (content[index].password === password) {
       const token = jwt.sign(
@@ -75,13 +66,11 @@ exports.login = (req, res, next) => {
       );
       content[index].token = token;
       utils.writeFile('user.json', content[index], 'id');
-      return res.send({
-        success: true,
-        code: 200,
+      return res.json({
         data: { ...content[index], expires: process.env.JWT_EXPIRE_TIME },
       });
     } else {
-      return res.send({ success: false, code: 400, data: '密码错误,登录失败' });
+      return res.json({ data: '密码错误,登录失败' }, 400);
     }
   }
 };
@@ -92,24 +81,24 @@ exports.register = (req, res, next) => {
   let password = req?.body?.password;
   let code = req?.body?.code;
   if (!username || !password || !code)
-    return res.send({
-      success: 0,
-      code: 400,
-      data: '用户名或密码或验证码不能为空',
-    });
-  if (!req.session.captcha)
-    return res.send({ success: false, code: 400, data: '验证码已过期' });
+    return res.json(
+      {
+        data: '用户名或密码或验证码不能为空',
+      },
+      400
+    );
+  if (!req.session.captcha) return res.json({ data: '验证码已过期' }, 400);
   let { text, createdAt, expiresIn } = req.session.captcha;
-  if (code !== text)
-    return res.send({ success: false, code: 400, data: '验证码错误' });
+  if (code !== text) return res.json({ data: '验证码错误' }, 400);
 
   let index = content.findIndex((item) => item.username === username);
   if (index !== -1)
-    return res.send({
-      success: false,
-      code: 400,
-      data: '用户名已存在，请重新输入',
-    });
+    return res.json(
+      {
+        data: '用户名已存在，请重新输入',
+      },
+      400
+    );
   utils.writeFile(
     'user.json',
     {
@@ -121,7 +110,7 @@ exports.register = (req, res, next) => {
     'id'
   );
 
-  return res.send({ success: true, code: 200, data: '注册成功' });
+  return res.json({ data: '注册成功' });
 };
 
 // 获取菜单
@@ -130,5 +119,5 @@ exports.getMenus = (req, res, next) => {
     path.join(__dirname, '../../public/data/menus.json'),
     'utf8'
   );
-  return res.send({ success: true, code: 200, data: JSON.parse(content) });
+  return res.json({ data: JSON.parse(content) });
 };

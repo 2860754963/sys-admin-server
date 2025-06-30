@@ -121,3 +121,7 @@ exports.getMenus = (req, res, next) => {
   );
   return res.json({ data: JSON.parse(content) });
 };
+
+exports.mine = (req, res, next) => {
+  utils.getCurrentInfo(req, res, next);
+};

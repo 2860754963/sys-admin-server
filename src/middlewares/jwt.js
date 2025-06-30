@@ -9,14 +9,16 @@ const route = require('../routes/index');
 const authenticateJWT = (req, res, next) => {
   const authorization = req.headers.authorization;
   if (!authorization) {
-    return res.status(401).json({
-      success: false,
-      data: '无效token或过期token',
-    });
+    return res.json(
+      {
+        data: '无效token或过期token',
+      },
+      401
+    );
   }
   jwt.verify(authorization, process.env.JWT_SECRET, (err, user) => {
     if (err) {
-      return res.status(403).json({ error: 'token无效或已过期' });
+      return res.json({ error: 'token无效或已过期' }, 403);
     }
     req.user = user;
     next();

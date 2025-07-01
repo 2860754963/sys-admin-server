@@ -8,8 +8,13 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const consoletable = require('@xdooi/consoletable');
+const loadsh = require('lodash');
+const dayjs = require('dayjs');
 const jwt = require('./middlewares/jwt');
 const checkMethods = require('./middlewares/checkMethods');
+
+global._ = loadsh;
+global.dayjs = dayjs;
 
 // 路由导入，路由的匹配是从上到下依次匹配的，写在前边的路由优先级较高
 const userRoutes = require('./routes/userRoutes');

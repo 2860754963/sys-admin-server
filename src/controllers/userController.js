@@ -125,3 +125,33 @@ exports.getMenus = (req, res, next) => {
 exports.mine = (req, res, next) => {
   utils.getCurrentInfo(req, res, next);
 };
+
+// 更新用户信息
+exports.updateUserInfo = (req, res, next) => {
+  let { id, nickname, phone, avatar, email } = req.body;
+  let index = content.findIndex((item) => item.id == id);
+  if (index === -1) {
+    return res.json({ data: '用户不存在' }, 400);
+  } else {
+    if (nickname) content[index].nickname = nickname;
+    if (avatar) content[index].avatar = avatar;
+    if (phone) content[index].phone = phone;
+    if (email) content[index].email = email;
+    content[index].updateTime = global.dayjs().format('YYYY-MM-DD HH:mm:ss');
+    utils.writeFile('user.json', content[index], 'id');
+    return res.json({ data: '更新成功' });
+  }
+};
+
+// 删除用户
+exports.deleteUser = (req, res, next) => {
+  let { id } = req.body;
+  let index = content.findIndex((item) => item.id === id);
+  if (index === -1) {
+    return res.json({ data: '用户不存在' }, 400);
+  } else {
+    content.splice(index, 1);
+    utils.writeFile('user.json', content, 'id');
+    return res.json({ data: '删除成功' });
+  }
+};

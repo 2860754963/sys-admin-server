@@ -19,7 +19,6 @@ global.dayjs = dayjs;
 // 路由导入，路由的匹配是从上到下依次匹配的，写在前边的路由优先级较高
 const userRoutes = require('./routes/userRoutes');
 const utilsRoutes = require('./routes/utilsRouter');
-const testRoutes = require('./routes/useDb');
 
 const app = express();
 app.use(favicon(path.join(__dirname, '../public', 'favicon.ico'))); // 网站图标
@@ -95,7 +94,6 @@ app.use((req, res, next) => {
 // 路由注册
 app.use('/api/user', jwt.checReqWhiteList, userRoutes);
 app.use('/api', utilsRoutes);
-app.use('/testdb', testRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

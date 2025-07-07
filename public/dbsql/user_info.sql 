@@ -1,0 +1,37 @@
+USE node_sys_admin;
+
+-- 删除已有表
+DROP TABLE IF EXISTS `user_info`;
+
+-- 创建 user_info 表
+CREATE TABLE `user_info` (
+  `id` INT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID',
+  `name` VARCHAR(50) DEFAULT NULL COMMENT '姓名',
+  `nickname` VARCHAR(100) DEFAULT NULL COMMENT '昵称',
+  `age` INT DEFAULT NULL COMMENT '年龄',
+  `username` VARCHAR(50) NOT NULL COMMENT '用户名',
+  `password` VARCHAR(100) NOT NULL COMMENT '密码',
+  `token` TEXT COMMENT '登录Token',
+  `email` VARCHAR(100) DEFAULT NULL COMMENT '邮箱',
+  `phone` VARCHAR(20) DEFAULT NULL COMMENT '手机号',
+  `address` VARCHAR(255) DEFAULT NULL COMMENT '地址',
+  `role` VARCHAR(50) DEFAULT NULL COMMENT '角色',
+  `createTime` DATETIME DEFAULT NULL COMMENT '创建时间',
+  `updateTime` DATETIME DEFAULT NULL COMMENT '更新时间',
+  `status` TINYINT DEFAULT NULL COMMENT '状态（1启用，0禁用）',
+  `avatar` VARCHAR(255) DEFAULT NULL COMMENT '头像URL',
+  `introduction` TEXT COMMENT '个人介绍'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户信息表';
+
+-- 插入示例数据
+INSERT INTO `user_info` (`id`, `name`, `nickname`, `age`, `username`, `password`, `token`, `email`, `phone`, `address`, `role`, `createTime`, `updateTime`, `status`, `avatar`, `introduction`)
+VALUES
+(1, '小美', '这是昵称', 20, 'admin', '123456', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJhZG1pbiIsImlhdCI6MTc1MTUxMTYwOCwiZXhwIjoxNzUxNTQ3NjA4fQ.KV-o4QHsmtHZxtj68GxIR4yYhjvDg6regrH7jRPNeQk', '123456@qq.com', '12345678901', '北京市海淀区西二旗', 'admin', '2021-01-01 00:00:00', '2025-07-01 16:54:06', 1, 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', '我是小美，一名系统管理员。'),
+
+(2, '小帅', NULL, NULL, 'admin1', '123456', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+
+(3, 'admincsssss', NULL, NULL, 'admincsssss', '123456', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+
+(4, 'nigulasi', NULL, NULL, 'nigulasi', '123456', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJuaWd1bGFzaSIsImlhdCI6MTc1MTMzMzIyMywiZXhwIjoxNzUxMzY5MjIzfQ.ZHmlKfKmzyPeHIRrqMfURu3i8mzTAOOPQ292NcmDewo', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+
+(6, 'nigulasi1', NULL, NULL, 'nigulasi1', '123456', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);

@@ -56,6 +56,9 @@ importers:
       multer:
         specifier: ^2.0.1
         version: 2.0.1
+      mysql:
+        specifier: ^2.18.1
+        version: 2.18.1
       pkg:
         specifier: ^5.8.1
         version: 5.8.1
@@ -81,8 +84,8 @@ importers:
 
 packages:
 
-  '@alicloud/credentials@2.4.3':
-    resolution: {integrity: sha512-r2thNtthchTz/c8/HryGSey1vY0UZx2FkAvb+vd+j7xhD/v/KUwnp8RJNQKNG3E4kfs4wSx2bgDSkcPAiXHQLQ==}
+  '@alicloud/credentials@2.4.4':
+    resolution: {integrity: sha512-/eRAGSKcniLIFQ1UCpDhB/IrHUZisQ1sc65ws/c2avxUMpXwH1rWAohb76SVAUJhiF4mwvLzLJM1Mn1XL4Xe/Q==}
 
   '@alicloud/darabonba-array@0.1.1':
     resolution: {integrity: sha512-UPP7p9//jywqM8EN6BjSbw1ovl/BzqreXdi5FmxT6m3PmFxsxabe+yamjeopyf2Gi0p3WqwJTBCeNji5eYUsJw==}
@@ -348,6 +351,9 @@ packages:
   basic-auth@1.0.4:
     resolution: {integrity: sha512-uvq3I/zC5TmG0WZJDzsXzIytU9GiiSq23Gl27Dq9sV81JTfPfQhtdADECP1DJZeJoZPuYU0Y81hWC5y/dOR+Yw==}
     engines: {node: '>= 0.6'}
+
+  bignumber.js@9.0.0:
+    resolution: {integrity: sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==}
 
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
@@ -999,6 +1005,10 @@ packages:
   multistream@4.1.0:
     resolution: {integrity: sha512-J1XDiAmmNpRCBfIWJv+n0ymC4ABcf/Pl+5YvC5B/D2f/2+8PtHvCNxMPKiQcZyi922Hq69J2YOpb1pTywfifyw==}
 
+  mysql@2.18.1:
+    resolution: {integrity: sha512-Bca+gk2YWmqp2Uf6k5NFEurwY/0td0cpebAucFpY/3jhrwrVGuxU2uQFCHjU19SJfje0yQvi+rVWdq78hR5lig==}
+    engines: {node: '>= 0.6'}
+
   napi-build-utils@1.0.2:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}
 
@@ -1167,6 +1177,9 @@ packages:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
     hasBin: true
 
+  readable-stream@2.3.7:
+    resolution: {integrity: sha512-Ebho8K4jIbHAxnuxi7o42OrZgF/ZTNcsZj6nRKyUmkhLFq8CHItp/fy6hQZuZmP/n3yZ9VBUbp4zz/mX8hmYPw==}
+
   readable-stream@2.3.8:
     resolution: {integrity: sha512-8p0AUk4XODgIewSi0l8Epjs+EVnWiK7NoDIEGU0HhE7+ZyY8D1IMY7odu5lRrFXGg71L15KG8QrPmum45RTtdA==}
 
@@ -1295,6 +1308,10 @@ packages:
   source-map@0.6.1:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
+
+  sqlstring@2.3.1:
+    resolution: {integrity: sha512-ooAzh/7dxIG5+uDik1z/Rd1vli0+38izZhGzSa34FwR7IbelPWCCKSNIl8jlL/F7ERvy8CB2jNeM1E9i9mXMAQ==}
+    engines: {node: '>= 0.6'}
 
   statuses@1.3.1:
     resolution: {integrity: sha512-wuTCPGlJONk/a1kqZ4fQM2+908lC7fa7nPYpTC1EhnvqLX/IICbeP1OZGDtA374trpSq68YubKUMo8oRhN46yg==}
@@ -1530,7 +1547,7 @@ packages:
 
 snapshots:
 
-  '@alicloud/credentials@2.4.3':
+  '@alicloud/credentials@2.4.4':
     dependencies:
       '@alicloud/tea-typescript': 1.8.0
       httpx: 2.3.3
@@ -1590,7 +1607,7 @@ snapshots:
 
   '@alicloud/gateway-pop@0.0.6':
     dependencies:
-      '@alicloud/credentials': 2.4.3
+      '@alicloud/credentials': 2.4.4
       '@alicloud/darabonba-array': 0.1.1
       '@alicloud/darabonba-encode-util': 0.0.2
       '@alicloud/darabonba-map': 0.0.1
@@ -1606,14 +1623,14 @@ snapshots:
 
   '@alicloud/gateway-spi@0.0.8':
     dependencies:
-      '@alicloud/credentials': 2.4.3
+      '@alicloud/credentials': 2.4.4
       '@alicloud/tea-typescript': 1.8.0
     transitivePeerDependencies:
       - supports-color
 
   '@alicloud/openapi-core@1.0.4':
     dependencies:
-      '@alicloud/credentials': 2.4.3
+      '@alicloud/credentials': 2.4.4
       '@alicloud/gateway-pop': 0.0.6
       '@alicloud/gateway-spi': 0.0.8
       '@darabonba/typescript': 1.0.3
@@ -1884,6 +1901,8 @@ snapshots:
   base64-js@1.5.1: {}
 
   basic-auth@1.0.4: {}
+
+  bignumber.js@9.0.0: {}
 
   bl@4.1.0:
     dependencies:
@@ -2528,6 +2547,13 @@ snapshots:
       once: 1.4.0
       readable-stream: 3.6.2
 
+  mysql@2.18.1:
+    dependencies:
+      bignumber.js: 9.0.0
+      readable-stream: 2.3.7
+      safe-buffer: 5.1.2
+      sqlstring: 2.3.1
+
   napi-build-utils@1.0.2: {}
 
   negotiator@0.6.3: {}
@@ -2705,6 +2731,16 @@ snapshots:
       minimist: 1.2.8
       strip-json-comments: 2.0.1
 
+  readable-stream@2.3.7:
+    dependencies:
+      core-util-is: 1.0.3
+      inherits: 2.0.4
+      isarray: 1.0.0
+      process-nextick-args: 2.0.1
+      safe-buffer: 5.1.2
+      string_decoder: 1.1.1
+      util-deprecate: 1.0.2
+
   readable-stream@2.3.8:
     dependencies:
       core-util-is: 1.0.3
@@ -2862,6 +2898,8 @@ snapshots:
       source-map: 0.6.1
 
   source-map@0.6.1: {}
+
+  sqlstring@2.3.1: {}
 
   statuses@1.3.1: {}
 

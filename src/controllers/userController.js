@@ -48,49 +48,70 @@ exports.login = (req, res, next) => {
   let { text, createdAt, expiresIn } = req.session.captcha;
   if (code !== text) return res.json({ data: '验证码错误' }, 400);
 
-  let index = content.findIndex((item) => item.username === username);
-  if (index === -1) {
-    return res.json(
-      {
-        data: '用户名不存在，请注册',
-      },
-      400
-    );
-  } else {
-    if (content[index].password === password) {
-      const token = jwt.sign(
-        { id: content[index].id, username: content[index].username },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: process.env.JWT_EXPIRE_TIME,
+  pool.getConnection((err, connection) => {
+    if (err) return res.json({ data: '数据库连接失败' }, 500);
+    connection.query(
+      'SELECT * FROM user_info WHERE user_name = ? LIMIT 1',
+      [username],
+      (err, result) => {
+        if (err) return res.json({ data: '数据库连接失败' }, 500);
+        if (result.length === 0) {
+          connection.release();
+          return res.json({ data: '用户名不存在，请注册' }, 400);
         }
-      );
-      content[index].token = token;
-      utils.writeFile('user.json', content[index], 'id');
-      return res.json({
-        data: { ...content[index], expires: process.env.JWT_EXPIRE_TIME },
-      });
-    } else {
-      return res.json({ data: '密码错误,登录失败' }, 400);
-    }
-  }
+        let { user_pwd } = result[0];
+        if (user_pwd !== password) {
+          connection.release();
+          return res.json({ data: '密码错误,登录失败' }, 400);
+        }
+        const token = jwt.sign(
+          {
+            id: result[0].id,
+            username: result[0].user_name,
+            realname: result[0].real_name,
+            nickname: result[0].nick_name,
+          },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: process.env.JWT_EXPIRE_TIME,
+          }
+        );
+        connection.query(
+          'UPDATE user_info SET token = ?, is_login = ?, login_time = ? , login_ip = ? WHERE id = ?',
+          [
+            token,
+            1,
+            global.dayjs().format('YYYY-MM-DD HH:mm:ss'),
+            req.ip,
+            result[0].id,
+          ],
+          (err) => {
+            connection.release();
+            if (err) return res.json({ data: '登录失败' }, 500);
+            return res.json({ data: '登录成功' });
+          }
+        );
+      }
+    );
+  });
 };
 
 // 注册
 exports.register = (req, res, next) => {
+  if (!req.session.captcha) return res.json({ data: '验证码已过期' }, 400);
+  let { text, createdAt, expiresIn } = req.session.captcha;
+  if (code !== text) return res.json({ data: '验证码错误' }, 400);
   pool.getConnection((err, connection) => {
-    if (err) return res.status(500).json({ data: '数据库连接失败' });
-
+    if (err) return res.json({ data: '数据库连接失败' }, 500);
     let username = req?.body?.username;
     let password = req?.body?.password;
     let code = req?.body?.code;
     if (!username || !password || !code) {
       connection.release();
-      return res.status(400).json({ data: '用户名或密码或验证码不能为空' });
+      return res.json({ data: '用户名或密码或验证码不能为空' }, 400);
     }
-
     connection.query(
-      'SELECT * FROM user_info WHERE username = ? LIMIT 1',
+      'SELECT * FROM user_info WHERE user_name = ? LIMIT 1',
       [username],
       (err, result) => {
         if (err) {
@@ -102,10 +123,9 @@ exports.register = (req, res, next) => {
           return res.json({ data: '用户名已存在，请重新输入' }, 400);
         }
         connection.query(
-          'INSERT INTO user_info (username, password) VALUES (?, ?)',
+          'INSERT INTO user_info (user_name, user_pwd) VALUES (?, ?)',
           [username, password],
           (err) => {
-            console.log('🚀🚀🚀 ~ pool.getConnection ~ err🚀🚀🚀', err);
             connection.release();
             if (err) return res.json({ data: '注册失败' }, 500);
             return res.json({ data: '注册成功' });
@@ -114,44 +134,6 @@ exports.register = (req, res, next) => {
       }
     );
   });
-
-  // let username = req?.body?.username;
-  // let password = req?.body?.password;
-  // let code = req?.body?.code;
-  // if (!username || !password || !code)
-  //   return res.json(
-  //     {
-  //       data: '用户名或密码或验证码不能为空',
-  //     },
-  //     400
-  //   );
-  // if (!req.session.captcha) return res.json({ data: '验证码已过期' }, 400);
-  // let { text, createdAt, expiresIn } = req.session.captcha;
-  // if (code !== text) return res.json({ data: '验证码错误' }, 400);
-
-  // connection.query(
-  //   'SELECT * FROM user_info WHERE username = ? Limit 1 ',
-  //   [username],
-  //   (err, result, fields) => {
-  //     if (err) return res.json({ data: '注册失败' }, 500);
-  //     if (result.length > 0) {
-  //       return res.json({ data: '用户名已存在，请重新输入' }, 400);
-  //     } else {
-  //       // 数据库写入
-  //       connection.query(
-  //         'INSERT INTO user_info (username, password) VALUES (?, ?)',
-  //         [username, password],
-  //         (err, result, fields) => {
-  //           console.log('🚀🚀🚀 ~ err🚀🚀🚀', err);
-  //           if (err) return res.json({ data: '注册失败' }, 500);
-  //           return res.json({ data: '注册成功' });
-  //         }
-  //       );
-  //     }
-  //   }
-  // );
-
-  // return res.json({ data: '注册成功' });
 };
 
 // 获取菜单

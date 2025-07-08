@@ -1,10 +1,10 @@
 module.exports = {
   dbPool: {
-    connectionLimit: 10,
-    host: 'localhost',
-    port: 3306,
-    user: 'root',
-    password: 'mazw990828',
-    database: 'node_sys_admin',
+    connectionLimit: process.env.DBPOOL_LIMIT,
+    host: process.env.DBPOOL_HOST,
+    port: process.env.DBPOOL_PORT,
+    user: process.env.DBPOOL_USER,
+    password: process.env.DBPOOL_PASSWORD,
+    database: process.env.DBPOOL_DATABASE,
   },
 };

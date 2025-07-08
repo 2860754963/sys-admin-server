@@ -138,11 +138,36 @@ exports.register = (req, res, next) => {
 
 // 获取菜单
 exports.getMenus = (req, res, next) => {
-  let content = fs.readFileSync(
-    path.join(__dirname, '../../public/data/menus.json'),
-    'utf8'
-  );
-  return res.json({ data: JSON.parse(content) });
+  pool.getConnection((err, connection) => {
+    if (err) return res.json({ data: '数据库连接失败' }, 500);
+
+    connection.query('SELECT * FROM menu ORDER BY id ASC', (err, result) => {
+      connection.release();
+      if (err) return res.json({ data: '数据库查询失败' }, 500);
+      const map = {};
+      result.forEach((item) => {
+        item.children = [];
+        item.hidden = !!item.hidden;
+        item.alwaysShow = !!item.always_show || false;
+        map[item.id] = item;
+      });
+
+      const resData = [];
+      result.forEach((item) => {
+        if (item.parent_id && item.parent_id !== 0) {
+          const parent = map[item.parent_id];
+          if (parent) {
+            parent.children = parent.children || [];
+            parent.children.push(item);
+          }
+        } else {
+          resData.push(item);
+        }
+      });
+
+      return res.json({ data: resData });
+    });
+  });
 };
 
 exports.mine = (req, res, next) => {

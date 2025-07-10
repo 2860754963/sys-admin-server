@@ -8,5 +8,6 @@ router.post('/login', userController.login);
 router.get('/getMenus', userController.getMenus);
 router.get('/mine', userController.mine);
 router.post('/updateUserInfo', userController.updateUserInfo);
+router.get('/logout', userController.logout);
 
 module.exports = router;

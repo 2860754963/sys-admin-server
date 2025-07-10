@@ -1,13 +1,6 @@
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const path = require('path');
-const utils = require('../utils/index');
 const CaptchaService = require('../utils/captchaService');
 const pool = require('../dataBase/dbPool');
-
-let content = JSON.parse(
-  fs.readFileSync(path.join(__dirname, '../../public/data/user.json'), 'utf8')
-);
 
 // 验证码
 exports.captcha = (req, res, next) => {
@@ -25,6 +18,7 @@ exports.captcha = (req, res, next) => {
   if (buffer && text) {
     return res.json({
       data: {
+        text,
         img: `data:image/png;base64,${buffer.toString('base64')}`,
       },
     });
@@ -88,7 +82,7 @@ exports.login = (req, res, next) => {
           (err) => {
             connection.release();
             if (err) return res.json({ data: '登录失败' }, 500);
-            return res.json({ data: '登录成功' });
+            return res.json({ data: '登录成功', token });
           }
         );
       }
@@ -140,7 +134,6 @@ exports.register = (req, res, next) => {
 exports.getMenus = (req, res, next) => {
   pool.getConnection((err, connection) => {
     if (err) return res.json({ data: '数据库连接失败' }, 500);
-
     connection.query('SELECT * FROM menu ORDER BY id ASC', (err, result) => {
       connection.release();
       if (err) return res.json({ data: '数据库查询失败' }, 500);
@@ -170,36 +163,91 @@ exports.getMenus = (req, res, next) => {
   });
 };
 
+// 获取用户信息
 exports.mine = (req, res, next) => {
-  utils.getCurrentInfo(req, res, next);
+  let { authorization } = req.headers;
+  jwt.verify(authorization, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) return res.json({ data: '请先登录', err }, 401);
+    pool.getConnection((err, connection) => {
+      if (err) return res.json({ data: '数据库连接失败', err }, 500);
+      connection.query(
+        'SELECT * FROM user_info WHERE id = ? LIMIT 1',
+        [decoded.id],
+        (err, result) => {
+          connection.release();
+
+          if (err) return res.json({ data: '数据库查询失败', err }, 500);
+          if (result.length === 0)
+            return res.json({ data: '用户不存在', err }, 400);
+          return res.json({
+            data: {
+              ...result[0],
+              login_time: global
+                .dayjs(result[0].login_time)
+                .format('YYYY-MM-DD HH:mm:ss'),
+            },
+          });
+        }
+      );
+    });
+  });
 };
 
 // 更新用户信息
 exports.updateUserInfo = (req, res, next) => {
-  let { id, nickname, phone, avatar, email } = req.body;
-  let index = content.findIndex((item) => item.id == id);
-  if (index === -1) {
-    return res.json({ data: '用户不存在' }, 400);
-  } else {
-    if (nickname) content[index].nickname = nickname;
-    if (avatar) content[index].avatar = avatar;
-    if (phone) content[index].phone = phone;
-    if (email) content[index].email = email;
-    content[index].updateTime = global.dayjs().format('YYYY-MM-DD HH:mm:ss');
-    utils.writeFile('user.json', content[index], 'id');
-    return res.json({ data: '更新成功' });
-  }
+  pool.getConnection((err, connection) => {
+    if (err) return res.json({ data: '数据库连接失败' }, 500);
+    let { id, nickname, realname, phone, avatar, email } = req.body;
+    connection.query(
+      'UPDATE user_info SET nick_name = ?, real_name = ?, phone = ?, avt_url = ?, email = ?, update_time = ? WHERE id = ?',
+      [
+        nickname,
+        realname,
+        phone,
+        avatar,
+        email,
+        global.dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        id,
+      ],
+      (err) => {
+        connection.release();
+        if (err) return res.json({ data: '更新失败', err }, 500);
+        return res.json({ data: '更新成功' });
+      }
+    );
+  });
 };
 
 // 删除用户
-exports.deleteUser = (req, res, next) => {
-  let { id } = req.body;
-  let index = content.findIndex((item) => item.id === id);
-  if (index === -1) {
-    return res.json({ data: '用户不存在' }, 400);
-  } else {
-    content.splice(index, 1);
-    utils.writeFile('user.json', content, 'id');
-    return res.json({ data: '删除成功' });
-  }
+// exports.deleteUser = (req, res, next) => {
+//   pool.getConnection((err, connection) => {
+//     if (err) return res.json({ data: '数据库连接失败', err }, 500);
+//     let { id } = req.body;
+//     connection.query('DELETE FROM user_info WHERE id = ?', [id], (err) => {
+//       connection.release();
+//       if (err) return res.json({ data: '删除失败', err }, 500);
+//       return res.json({ data: '删除成功' });
+//     });
+//   });
+// };
+
+// 退出登录
+exports.logout = (req, res, next) => {
+  let { authorization } = req.headers;
+  let token = authorization;
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) return res.json({ data: '请先登录', err }, 401);
+    pool.getConnection((err, connection) => {
+      if (err) return res.json({ data: '数据库连接失败', err }, 500);
+      connection.query(
+        'UPDATE user_info SET token = ?, is_login = ? WHERE id = ?',
+        [null, 0, decoded.id],
+        (err) => {
+          connection.release();
+          if (err) return res.json({ data: '退出失败', err }, 500);
+          return res.json({ data: '退出成功' });
+        }
+      );
+    });
+  });
 };

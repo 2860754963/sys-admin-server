@@ -9,7 +9,8 @@
     "dev": "dotenv -e .env.development supervisor ./bin/www",
     "prod": "dotenv -e .env.production supervisor ./bin/www",
     "pkg": "pkg . -t  node18-macos-arm64 --out-path dist/",
-    "build": "webpack --config webpack.config.js"
+    "build:dev": "webpack --config webpack.config.js --mode=development",
+    "build:prod": "webpack --config webpack.config.js --mode=production"
   },
   "pkg": {
     "assets": [
@@ -21,6 +22,8 @@
   },
   "dependencies": {
     "@alicloud/dysmsapi20170525": "4.1.1",
+    "@babel/core": "7.21.5",
+    "@babel/preset-env": "^7.28.0",
     "@xdooi/consoletable": "^1.0.3",
     "body-parser": "^2.2.0",
     "captchapng2": "^1.0.3",
@@ -43,6 +46,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "babel-loader": "8.2.5",
     "express-session": "^1.14.2",
     "supervisor": "^0.12.0",
     "webpack": "^5.99.9",

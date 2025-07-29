@@ -3,7 +3,7 @@ const CaptchaService = require('../utils/captchaService');
 const pool = require('../dataBase/dbPool');
 
 // 验证码
-exports.captcha = (req, res, next) => {
+exports.captcha = (req, res, next) => { 
   const { buffer, text } = CaptchaService.createPng({
     width: 120,
     height: 40,
@@ -16,14 +16,16 @@ exports.captcha = (req, res, next) => {
   };
   console.log('🚀🚀🚀req.session.captcha🚀🚀🚀', req.session.captcha);
   if (buffer && text) {
-    return res.json({
+     return res.json({
       data: {
         text,
         img: `data:image/png;base64,${buffer.toString('base64')}`,
       },
     });
+  
   } else {
-    return res.json({ data: '验证码生成失败' }, 500);
+   return  res.json({ data: '验证码生成失败' }, 500);
+   
   }
 };
 

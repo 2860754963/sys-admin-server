@@ -16,6 +16,7 @@ const checkMethods = require('./middlewares/checkMethods');
 // 生产环境通过mysql保存session会话
 const MySQLStore = require('express-mysql-session')(session);
 const pool = require('../src/dataBase/dbPool');
+// console.log("🚀 ~ pool:", pool)
 const sessionStore = new MySQLStore({
   checkExpirationInterval: 900000,  // 每 15 分钟检查一次过期的会话
   expiration: Number(process.env.CODE_EXPIRE_TIME),
@@ -110,6 +111,7 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
+  console.log("🚀 ~ err:", err)
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.json(
@@ -118,6 +120,7 @@ app.use((err, req, res, next) => {
     },
     err.status || 500
   );
+  return
 });
 
 module.exports = app;

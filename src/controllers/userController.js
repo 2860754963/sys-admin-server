@@ -43,6 +43,7 @@ exports.login = (req, res, next) => {
   if (code !== text) return res.json({ data: '验证码错误' }, 400);
 
   pool.getConnection((err, connection) => {
+    console.log('🚀🚀🚀 ~ pool.getConnection ~ err🚀🚀🚀', err);
     if (err) return res.json({ data: '数据库连接失败' }, 500);
     connection.query(
       'SELECT * FROM user_info WHERE user_name = ? LIMIT 1',

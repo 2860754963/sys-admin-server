@@ -13,6 +13,11 @@ const dayjs = require('dayjs');
 const jwt = require('./middlewares/jwt');
 const checkMethods = require('./middlewares/checkMethods');
 
+// 生产环境通过mysql保存session会话
+// const MySQLStore = require('express-mysql-session')(session);
+// const pool = require('../src/dataBase/dbPool');
+// const sessionStore = new MySQLStore({}, pool);
+
 global._ = loadsh;
 global.dayjs = dayjs;
 
@@ -32,13 +37,14 @@ app.use(cookieParser());
 app.use(
   session({
     name: 'SESSION_ID',
-    secret: process.env.SESSION_SECRET, // 替换为安全的密钥
+    secret: 'session_secret_key', // 替换为安全的密钥
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production' ? true : false,
       maxAge: Number(process.env.CODE_EXPIRE_TIME),
     },
+    store: null,
   })
 );
 

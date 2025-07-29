@@ -29,6 +29,7 @@ exports.captcha = (req, res, next) => {
 
 // 登录
 exports.login = (req, res, next) => {
+
   let username = req?.body?.username;
   let password = req?.body?.password;
   let code = req?.body?.code;
@@ -46,7 +47,7 @@ exports.login = (req, res, next) => {
     console.log('🚀🚀🚀 ~ pool.getConnection ~ err🚀🚀🚀', err);
     if (err) return res.json({ data: '数据库连接失败' }, 500);
     connection.query(
-      'SELECT * FROM user_info WHERE user_name = ? LIMIT 1',
+      'SELECT * FROM userInfo WHERE user_name = ? LIMIT 1',
       [username],
       (err, result) => {
         if (err) return res.json({ data: '数据库连接失败' }, 500);
@@ -72,7 +73,7 @@ exports.login = (req, res, next) => {
           }
         );
         connection.query(
-          'UPDATE user_info SET token = ?, is_login = ?, login_time = ? , login_ip = ? WHERE id = ?',
+          'UPDATE userInfo SET token = ?, is_login = ?, login_time = ? , login_ip = ? WHERE id = ?',
           [
             token,
             1,
@@ -81,6 +82,7 @@ exports.login = (req, res, next) => {
             result[0].id,
           ],
           (err) => {
+            console.log("🚀 ~ err:", err)
             connection.release();
             if (err) return res.json({ data: '登录失败' }, 500);
             return res.json({ data: '登录成功', token });
@@ -106,7 +108,7 @@ exports.register = (req, res, next) => {
       return res.json({ data: '用户名或密码或验证码不能为空' }, 400);
     }
     connection.query(
-      'SELECT * FROM user_info WHERE user_name = ? LIMIT 1',
+      'SELECT * FROM userInfo WHERE user_name = ? LIMIT 1',
       [username],
       (err, result) => {
         if (err) {
@@ -118,7 +120,7 @@ exports.register = (req, res, next) => {
           return res.json({ data: '用户名已存在，请重新输入' }, 400);
         }
         connection.query(
-          'INSERT INTO user_info (user_name, user_pwd) VALUES (?, ?)',
+          'INSERT INTO userInfo (user_name, user_pwd) VALUES (?, ?)',
           [username, password],
           (err) => {
             connection.release();
@@ -172,7 +174,7 @@ exports.mine = (req, res, next) => {
     pool.getConnection((err, connection) => {
       if (err) return res.json({ data: '数据库连接失败', err }, 500);
       connection.query(
-        'SELECT * FROM user_info WHERE id = ? LIMIT 1',
+        'SELECT * FROM userInfo WHERE id = ? LIMIT 1',
         [decoded.id],
         (err, result) => {
           connection.release();
@@ -200,7 +202,7 @@ exports.updateUserInfo = (req, res, next) => {
     if (err) return res.json({ data: '数据库连接失败' }, 500);
     let { id, nickname, realname, phone, avatar, email } = req.body;
     connection.query(
-      'UPDATE user_info SET nick_name = ?, real_name = ?, phone = ?, avt_url = ?, email = ?, update_time = ? WHERE id = ?',
+      'UPDATE userInfo SET nick_name = ?, real_name = ?, phone = ?, avt_url = ?, email = ?, update_time = ? WHERE id = ?',
       [
         nickname,
         realname,
@@ -224,7 +226,7 @@ exports.updateUserInfo = (req, res, next) => {
 //   pool.getConnection((err, connection) => {
 //     if (err) return res.json({ data: '数据库连接失败', err }, 500);
 //     let { id } = req.body;
-//     connection.query('DELETE FROM user_info WHERE id = ?', [id], (err) => {
+//     connection.query('DELETE FROM userInfo WHERE id = ?', [id], (err) => {
 //       connection.release();
 //       if (err) return res.json({ data: '删除失败', err }, 500);
 //       return res.json({ data: '删除成功' });
@@ -241,7 +243,7 @@ exports.logout = (req, res, next) => {
     pool.getConnection((err, connection) => {
       if (err) return res.json({ data: '数据库连接失败', err }, 500);
       connection.query(
-        'UPDATE user_info SET token = ?, is_login = ? WHERE id = ?',
+        'UPDATE userInfo SET token = ?, is_login = ? WHERE id = ?',
         [null, 0, decoded.id],
         (err) => {
           connection.release();

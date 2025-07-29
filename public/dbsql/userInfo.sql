@@ -18,10 +18,10 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
--- Table structure for user_info
+-- Table structure for userInfo
 -- ----------------------------
-DROP TABLE IF EXISTS `user_info`;
-CREATE TABLE `user_info` (
+DROP TABLE IF EXISTS `userInfo`;
+CREATE TABLE `userInfo` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `user_code` varchar(36) DEFAULT NULL COMMENT '用户编号',
   `user_name` varchar(100) DEFAULT NULL COMMENT '用户名',
@@ -52,12 +52,12 @@ CREATE TABLE `user_info` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户信息表';
 
 -- ----------------------------
--- Records of user_info
+-- Records of userInfo
 -- ----------------------------
 BEGIN;
-INSERT INTO `user_info` (`id`, `user_code`, `user_name`, `user_pwd`, `real_name`, `nick_name`, `sex`, `phone`, `avt_url`, `birthday`, `email`, `state`, `employee_id`, `login_time`, `device_id`, `remark`, `openid`, `union_id`, `is_inner`, `employee_dep_id`, `employee_dep_name`, `login_ip`, `is_complete_info`, `create_time`, `update_time`, `is_login`) VALUES (1, NULL, 'xiaomei', '123456', '小美', '小美昵称', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL);
-INSERT INTO `user_info` (`id`, `user_code`, `user_name`, `user_pwd`, `real_name`, `nick_name`, `sex`, `phone`, `avt_url`, `birthday`, `email`, `state`, `employee_id`, `login_time`, `device_id`, `remark`, `openid`, `union_id`, `is_inner`, `employee_dep_id`, `employee_dep_name`, `login_ip`, `is_complete_info`, `create_time`, `update_time`, `is_login`) VALUES (2, NULL, 'xiaoshuai', '123456', '小帅', '小帅昵称', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL);
-INSERT INTO `user_info` (`id`, `user_code`, `user_name`, `user_pwd`, `real_name`, `nick_name`, `sex`, `phone`, `avt_url`, `birthday`, `email`, `state`, `employee_id`, `login_time`, `device_id`, `remark`, `openid`, `union_id`, `is_inner`, `employee_dep_id`, `employee_dep_name`, `login_ip`, `is_complete_info`, `create_time`, `update_time`, `is_login`) VALUES (3, NULL, 'nigulasi', '123456', '尼古拉斯', '麻辣炒仁', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL);
+INSERT INTO `userInfo` (`id`, `user_code`, `user_name`, `user_pwd`, `real_name`, `nick_name`, `sex`, `phone`, `avt_url`, `birthday`, `email`, `state`, `employee_id`, `login_time`, `device_id`, `remark`, `openid`, `union_id`, `is_inner`, `employee_dep_id`, `employee_dep_name`, `login_ip`, `is_complete_info`, `create_time`, `update_time`, `is_login`) VALUES (1, NULL, 'xiaomei', '123456', '小美', '小美昵称', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL);
+INSERT INTO `userInfo` (`id`, `user_code`, `user_name`, `user_pwd`, `real_name`, `nick_name`, `sex`, `phone`, `avt_url`, `birthday`, `email`, `state`, `employee_id`, `login_time`, `device_id`, `remark`, `openid`, `union_id`, `is_inner`, `employee_dep_id`, `employee_dep_name`, `login_ip`, `is_complete_info`, `create_time`, `update_time`, `is_login`) VALUES (2, NULL, 'xiaoshuai', '123456', '小帅', '小帅昵称', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL);
+INSERT INTO `userInfo` (`id`, `user_code`, `user_name`, `user_pwd`, `real_name`, `nick_name`, `sex`, `phone`, `avt_url`, `birthday`, `email`, `state`, `employee_id`, `login_time`, `device_id`, `remark`, `openid`, `union_id`, `is_inner`, `employee_dep_id`, `employee_dep_name`, `login_ip`, `is_complete_info`, `create_time`, `update_time`, `is_login`) VALUES (3, NULL, 'nigulasi', '123456', '尼古拉斯', '麻辣炒仁', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

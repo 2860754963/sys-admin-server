@@ -14,9 +14,12 @@ const jwt = require('./middlewares/jwt');
 const checkMethods = require('./middlewares/checkMethods');
 
 // 生产环境通过mysql保存session会话
-// const MySQLStore = require('express-mysql-session')(session);
-// const pool = require('../src/dataBase/dbPool');
-// const sessionStore = new MySQLStore({}, pool);
+const MySQLStore = require('express-mysql-session')(session);
+const pool = require('../src/dataBase/dbPool');
+const sessionStore = new MySQLStore({
+  checkExpirationInterval: 900000,  // 每 15 分钟检查一次过期的会话
+  expiration: Number(process.env.CODE_EXPIRE_TIME),
+}, pool);
 
 global._ = loadsh;
 global.dayjs = dayjs;
@@ -37,19 +40,18 @@ app.use(cookieParser());
 app.use(
   session({
     name: 'SESSION_ID',
-    secret: 'session_secret_key', // 替换为安全的密钥
+    secret: 'session_secret_key',
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: process.env.NODE_ENV === 'production' ? true : false,
+      secure: false,
       maxAge: Number(process.env.CODE_EXPIRE_TIME),
     },
-    store: null,
+    store: process.env.NODE_ENV === 'production' ? sessionStore : sessionStore,
   })
 );
 
 app.use((req, res, next) => {
-  // 参数log;
   const options = { head: 'def', max: 50 };
   consoletable.drawTable(
     [
@@ -88,10 +90,8 @@ app.use(cors());
 app.use((req, res, next) => {
   const originalJson = res.json;
   res.json = (data, statusCode = 200) => {
-    // if (typeof data === 'object') {
     data.code = statusCode;
     data.success = statusCode === 200;
-    // }
     originalJson.call(res, data);
   };
   next();

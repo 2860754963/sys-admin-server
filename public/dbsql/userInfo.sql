@@ -49,7 +49,7 @@ CREATE TABLE `userInfo` (
   `update_time` datetime DEFAULT NULL,
   `is_login` tinyint DEFAULT NULL COMMENT '登录状态',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户信息表';
 
 -- ----------------------------
 -- Records of userInfo

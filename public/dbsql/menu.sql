@@ -14,7 +14,7 @@
  Date: 08/07/2025 14:59:56
 */
 
-SET NAMES utf8mb4;
+SET NAMES utf8mb4; 
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
@@ -35,7 +35,7 @@ CREATE TABLE `menu` (
   `hidden` BOOLEAN DEFAULT FALSE COMMENT '是否隐藏',
   `always_show` BOOLEAN DEFAULT FALSE COMMENT '是否总是显示根菜单',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='菜单信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='菜单信息表';
 
 -- ----------------------------
 -- Records of menu

@@ -3,7 +3,7 @@ const CaptchaService = require('../utils/captchaService');
 const pool = require('../dataBase/dbPool');
 
 // 验证码
-exports.captcha = (req, res, next) => { 
+exports.captcha = (req, res, next) => {
   const { buffer, text } = CaptchaService.createPng({
     width: 120,
     height: 40,
@@ -16,16 +16,16 @@ exports.captcha = (req, res, next) => {
   };
   console.log('🚀🚀🚀req.session.captcha🚀🚀🚀', req.session.captcha);
   if (buffer && text) {
-     return res.json({
+    return res.json({
       data: {
         text,
         img: `data:image/png;base64,${buffer.toString('base64')}`,
       },
     });
-  
+
   } else {
-   return  res.json({ data: '验证码生成失败' }, 500);
-   
+    return res.json({ data: '验证码生成失败' }, 500);
+
   }
 };
 
@@ -99,12 +99,13 @@ exports.login = (req, res, next) => {
 exports.register = (req, res, next) => {
   if (!req.session.captcha) return res.json({ data: '验证码已过期' }, 400);
   let { text, createdAt, expiresIn } = req.session.captcha;
-  if (code !== text) return res.json({ data: '验证码错误' }, 400);
+
   pool.getConnection((err, connection) => {
     if (err) return res.json({ data: '数据库连接失败' }, 500);
     let username = req?.body?.username;
     let password = req?.body?.password;
     let code = req?.body?.code;
+    if (code !== text) return res.json({ data: '验证码错误' }, 400);
     if (!username || !password || !code) {
       connection.release();
       return res.json({ data: '用户名或密码或验证码不能为空' }, 400);

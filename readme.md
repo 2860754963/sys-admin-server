@@ -12,6 +12,23 @@ sys-admin-server/
 ├── .env # 环境变量配置
 └──package.json
 
+本地创建 .env.development 、.env.production 两个文件，分别配置开发环境和生产环境的环境变量。
+.env.development 文件
+PORT=8989
+NODE_ENV=development
+JWT_SECRET=login_secret_key
+JWT_EXPIRE_TIME=10h
+SESSION_SECRET=session_secret_key
+CODE_EXPIRE_TIME=60000
+
+DBPOOL_HOST=127.0.0.1
+DBPOOL_PORT=3306
+DBPOOL_USER=root
+DBPOOL_PASSWORD=root
+DBPOOL_DATABASE=node_sys_admin
+DBPOOL_LIMIT=10000
+DBPOOL_TIMEOUT=30000
+
 .editorconfig 文件 用于统一定义代码风格，如缩进、空格、换行符等，需 vscode 下载对应插件与 npm 依赖包支持。
 
 .nvmrc 文件用于在已安装 nvm node 版本管理工具下使用 nvm use 切换到指定版本。

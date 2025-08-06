@@ -42,3 +42,5 @@ dotenv 包 用于管理环境变量，如数据库连接信息、第三方 API �
 supervisor 包 用于管理 Node.js 进程，如自动重启进程、监控进程状态等。需安装 supervisor 包，并在 package.json 文件中配置 scripts 字段。
 "start": "supervisor ./bin/www" // 启动命令
 默认监控所有文件夹和文件，一旦变化就会重启
+
+readme 文件 用于说明项目的基本信息，如项目名称、项目描述、项目依赖、项目启动命令等。

@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const dayjs = require('dayjs');
-const Dotenv = require('dotenv-webpack'); 
+const Dotenv = require('dotenv-webpack');
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === 'production';
@@ -10,7 +10,7 @@ module.exports = (env, argv) => {
     target: 'node',
     output: {
       path: path.resolve(__dirname, 'dist'),
-      filename: `index${dayjs().format('YYYYMMDDHHmm')}.js`,
+      filename: `index.js`,
     },
     module: {
       rules: [
@@ -36,7 +36,7 @@ module.exports = (env, argv) => {
               files.forEach((file) => {
                 const filePath = path.join(distPath, file);
                 if (fs.statSync(filePath).isFile()) {
-                  fs.unlinkSync(filePath); 
+                  fs.unlinkSync(filePath);
                 }
               });
             }
@@ -45,7 +45,7 @@ module.exports = (env, argv) => {
       },
       new Dotenv({
         path: isProduction ? './.env.production' : './.env.development',
-        systemvars: true, 
+        systemvars: true,
       }),
     ],
   };

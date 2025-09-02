@@ -3,20 +3,27 @@ const path = require('path');
 const multer = require('multer');
 const uuid = require('uuid');
 
-const memoryDest = path.join(__dirname, '../../public/files');
-
 const storage = multer.diskStorage({
   // 文件存储位置
   destination: (req, file, cb) => {
-    const isExists = fs.existsSync(memoryDest);
+    let memoryDest = void 0;
+    // 通过mimetype 区分上传的文件类型以区别不同的存放位置
+    if (file.mimetype.startsWith('image/')) {
+      memoryDest = path.join(__dirname, '../../public/images');
+    } else if (file.mimetype.startsWith('video/')) {
+      memoryDest = path.join(__dirname, '../../public/videos');
+    } else {
+      memoryDest = path.join(__dirname, '../../public/files');
+    }
+    let isExists = fs.existsSync(memoryDest);
     if (!isExists) {
       fs.mkdirSync(memoryDest);
     }
     cb(null, memoryDest);
   },
   filename: (req, file, cb) => {
-    const uid = uuid.v1(); //Create a version 1 (timestamp) UUID
-    cb(null, uid + file.originalname);
+    // const uid = uuid.v1(); //Create a version 1 (timestamp) UUID
+    cb(null, file.originalname);
   },
 });
 
@@ -31,7 +38,7 @@ const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
-    fileSize: 20 * 1024 * 1024,
+    // fileSize: 20 * 1024 * 1024,
   },
 });
 

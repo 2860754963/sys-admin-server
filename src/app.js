@@ -16,11 +16,13 @@ const checkMethods = require('./middlewares/checkMethods');
 // 生产环境通过mysql保存session会话
 const MySQLStore = require('express-mysql-session')(session);
 const pool = require('../src/dataBase/dbPool');
-// console.log("🚀 ~ pool:", pool)
-const sessionStore = new MySQLStore({
-  checkExpirationInterval: 900000,  // 每 15 分钟检查一次过期的会话
-  expiration: Number(process.env.CODE_EXPIRE_TIME),
-}, pool);
+const sessionStore = new MySQLStore(
+  {
+    checkExpirationInterval: 900000, // 每 15 分钟检查一次过期的会话
+    expiration: Number(process.env.CODE_EXPIRE_TIME),
+  },
+  pool
+);
 
 global._ = loadsh;
 global.dayjs = dayjs;
@@ -100,7 +102,7 @@ app.use((req, res, next) => {
 
 // 路由注册
 app.use('/api/user', jwt.checReqWhiteList, userRoutes);
-app.use('/api', utilsRoutes);
+app.use('/api', jwt.checReqWhiteList, utilsRoutes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -111,7 +113,7 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res, next) => {
-  console.log("🚀 ~ err:", err)
+  console.log('🚀 ~ err:', err);
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.json(
@@ -120,7 +122,7 @@ app.use((err, req, res, next) => {
     },
     err.status || 500
   );
-  return
+  return;
 });
 
 module.exports = app;

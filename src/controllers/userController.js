@@ -22,16 +22,13 @@ exports.captcha = (req, res, next) => {
         img: `data:image/png;base64,${buffer.toString('base64')}`,
       },
     });
-
   } else {
     return res.json({ data: '验证码生成失败' }, 500);
-
   }
 };
 
 // 登录
 exports.login = (req, res, next) => {
-
   let username = req?.body?.username;
   let password = req?.body?.password;
   let code = req?.body?.code;
@@ -84,7 +81,7 @@ exports.login = (req, res, next) => {
             result[0].id,
           ],
           (err) => {
-            console.log("🚀 ~ err:", err)
+            console.log('🚀 ~ err:', err);
             connection.release();
             if (err) return res.json({ data: '登录失败' }, 500);
             return res.json({ data: '登录成功', token });

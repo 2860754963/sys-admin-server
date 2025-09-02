@@ -1,9 +1,9 @@
 const writeFile = require('./writeFile');
 const CaptchaService = require('./captchaService');
-const getCurrentInfo = require('./getCurrentInfo');
+const getCurrentUserInfo = require('./getCurrentUserInfo');
 
 module.exports = {
   writeFile,
   CaptchaService,
-  getCurrentInfo,
+  getCurrentUserInfo,
 };
